@@ -18,10 +18,7 @@ Remember KISS
 #include <sstream>
 #include <fstream>
 
-#include <windows.h>
-#include <sql.h>
-#include <sqltypes.h>
-#include <sqlext.h>
+#include <sqlite3>
 
 using namespace std;
 
