@@ -11,11 +11,8 @@ Remember KISS
 */
 
 #include <iostream>
-
-#include <string> //Use string::at to manipulate string objects
+#include <string>
 #include <vector>
-
-#include <sstream>
 #include <fstream>
 
 #include <sqlite3>
@@ -87,43 +84,3 @@ vector<string> inputFormatter(string userInputStr)
 
     return formattedInput;
 }
-
-/*FAILED ATTEMPT TO PLACE MULTIPLE SENTENCES INTO A VECTOR CONTAINER
-
-vector< vector<string> > inputFormatter(string userInputStr)
-{
-    //Intermediary vectors and buffers to simplify pushing into the formatted vector
-    vector<string> sentences;
-    vector < vector<string> > formattedInput(1);
-
-    //Push the input string into the vector sentences
-    for(unsigned charPos = 0, lastSentencePos = 0; charPos < userInputStr.length(); charPos++)
-    {
-        if(ispunct(userInputStr.at(charPos)))
-        {
-            sentences.push_back(userInputStr.substr(lastSentencePos , charPos - lastSentencePos));
-            lastSentencePos = charPos;
-            formattedInput.resize(1 + formattedInput.size());
-        }
-    }
-
-    //Read sentence strings into buffer, and then push the buffer into the formatted vector
-    for(unsigned sentencePos = 0; sentencePos < sentences.size(); sentencePos++)
-    {
-        stringstream sentenceBuffer;
-        string wordBuffer;
-        vector <string> wordVector;
-
-        while(sentenceBuffer << sentences[sentencePos]);
-
-        while(sentenceBuffer >> wordBuffer)
-        {
-            wordVector.push_back(wordBuffer);
-        }
-
-        formattedInput[sentencePos] = wordVector;
-    }
-
-    return formattedInput;
-}
-*/
