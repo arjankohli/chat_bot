@@ -14,45 +14,49 @@ Remember KISS
 #include <string>
 #include <vector>
 #include <fstream>
-
-#include <sqlite3>
+#include <sqlite3.h>
 
 using namespace std;
 
-//vector< vector<string> > inputFormatter(string);
+string getInput();
 vector<string> inputFormatter(string);
-
-//Move this elsewhere ASAP
-bool userLeaving = false;
+void inputParser(vector<string>);
 
 int main()
 {
-	string userInputStr;
-	vector<string> formattedInput;
+	bool userLeaving = false;
+	vector<string> userMessage;
 
 	cout << "Hello world, I am cbot!" << endl;
 	cout << "I have been designed to enjoy conversations, say whatever's on your mind!" << endl;
 
 	do
 	{
-		getline(cin, userInputStr);
-
-		//Function to format the input into something usable here
-		formattedInput = inputFormatter(userInputStr);
+		//Get the user input, and format the input into a vector dividing words and punctuation
+		userMessage = inputFormatter(getInput());
 
 		//Function to parse input here
-		//inputParser(formattedInput);
+		inputParser(userMessage);
 
 		//Function to structure a response here
 
 		//Function to output a response here
-		for(unsigned i = 0; i < formattedInput.size(); i++)
+		for(unsigned i = 0; i < userMessage.size(); i++)
 		{
-			cout << formattedInput[i] << ' ';
+			cout << userMessage[i] << ' ';
 		}
 	}while(!userLeaving);
 
 	return 0;
+}
+
+string getInput()
+{
+	string inputString;
+
+	getline(cin, inputString);
+
+	return inputString;
 }
 
 vector<string> inputFormatter(string userInputStr)
@@ -79,4 +83,9 @@ vector<string> inputFormatter(string userInputStr)
 	}
 
 	return formattedInput;
+}
+
+void inputParser(vector<string> input)
+{
+
 }
