@@ -63,22 +63,22 @@ vector<string> inputFormatter(string userInputStr)
 {
 	vector<string> formattedInput(1);
 
-	for(unsigned charPos = 0, wordPos = 0; charPos < userInputStr.length(); charPos++)
+	for(unsigned strPos = 0, vectPos = 0; strPos < userInputStr.length(); strPos++)
 	{
-		if(isalnum(userInputStr.at(charPos)))
+		if(isalnum(userInputStr.at(strPos)))
 		{
-			formattedInput.at(wordPos).push_back(userInputStr.at(charPos));
+			formattedInput.at(vectPos).push_back(userInputStr.at(strPos));
 		}
-		else if(isspace(userInputStr.at(charPos)))
+		else if(isspace(userInputStr.at(strPos)))
 		{
-			wordPos++;
-			formattedInput.resize(wordPos + 1);
+			vectPos++;
+			formattedInput.resize(vectPos + 1);
 		}
-		else if(ispunct(userInputStr.at(charPos)))
+		else if(ispunct(userInputStr.at(strPos)))
 		{
-			wordPos++;
-			formattedInput.resize(wordPos + 1);
-			formattedInput.at(wordPos).push_back(userInputStr.at(charPos));
+			vectPos++;
+			formattedInput.resize(vectPos + 1);
+			formattedInput.at(vectPos).push_back(userInputStr.at(strPos));
 		}
 	}
 
@@ -87,5 +87,23 @@ vector<string> inputFormatter(string userInputStr)
 
 void inputParser(vector<string> input)
 {
+	//Connect to the database, limited to old style c code by the sqlite header file
+	sqlite3 *db;
+	char *zErrMsg = 0;
+	int rc;
 
+	rc = sqlite3_open("vocabulary.db", &db);
+	if(rc)
+	{
+		cout << "Cant open database:" << sqlite3_errmsg(db);
+	}
+	else
+	{
+		cout << "Opened database successfully" << endl;
+		
+
+
+	}
+	//Close the connection now that we are done with it.
+	sqlite3_close(db);
 }
