@@ -8,6 +8,9 @@ and then applying the words in context to develop a sentence meaning.
 Then a response is formulated based on the sentence interpretation
 
 Remember KISS
+
+For development in codeblocks use:
+#include <C:\Users\Arjan\codeblocks\sqlite3\sqlite3.h>
 */
 
 #include <iostream>
