@@ -17,7 +17,7 @@ For development in codeblocks use:
 #include <string>
 #include <vector>
 #include <fstream>
-#include <sqlite3.h>
+#include <C:\Users\Arjan\codeblocks\sqlite3\sqlite3.h>
 
 using namespace std;
 
@@ -103,8 +103,6 @@ void inputParser(vector<string> input)
 	else
 	{
 		cout << "Opened database successfully" << endl;
-		
-
 
 	}
 	//Close the connection now that we are done with it.

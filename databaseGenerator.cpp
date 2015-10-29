@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
-#include <sqlite3.h>
+#include <C:\Users\Arjan\codeblocks\sqlite3\sqlite3.h>
 #include <fstream>
 using namespace std;
 
 void databaseGenerator();
 
-int main()
+int makeDatabase()
 {
 	databaseGenerator();
 	return 0;
@@ -33,7 +33,7 @@ void databaseGenerator()
 		inputFile.open("input.txt");
 
                 //nouns, pronouns, verbs, adjectives, adverbs, prepositions$
-		
+
 
         }
         //Close the connection now that we are done with it.
