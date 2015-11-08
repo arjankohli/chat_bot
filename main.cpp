@@ -17,14 +17,14 @@ using namespace std;
 
 void sentenceParser(vector<string>);
 
-//This callback function is used to get data from sql SELECT statements
-static int callback(void *data, int argc, char **argv, char **azColName);
+//Used to place sql query results into wordTypes
+static int parserCallback(void *data, int argc, char **argv, char **azColName);
+vector<string> wordTypes;
 
 int main()
 {
 	bool userLeaving = false;
 	vector<string> userMessage;
-	vector<string> wordTypes;
 
 	cout << "Hello world, I am cbot!" << endl;
 	cout << "I have been designed to enjoy conversations, say whatever's on your mind!" << endl;
@@ -32,7 +32,8 @@ int main()
 	do
 	{
 	    //Place the user sentence into vector userMessage
-        createVector(getUserSentence(), userMessage);
+        userMessage = createVector(getUserSentence());
+        wordTypes.resize(userMessage.size());
 
 		//Determine the sentence type utilizing a database of vocabulary
 		sentenceParser(userMessage);
@@ -40,11 +41,10 @@ int main()
 		//Function to structure a response here
 
 		//Function to output a response here
-		for(unsigned i = 0; i < userMessage.size(); i++)
-		{
-			cout << userMessage[i] << ' ';
-		}
 
+
+        userMessage.clear();
+        wordTypes.clear();
 	}while(!userLeaving);
 
 	return 0;
@@ -56,7 +56,7 @@ void sentenceParser(vector<string> userMessage)
     char *sql;
     char *zErrMsg = 0;
     int rc;
-    const char* data = "Callback function called";
+    const char* data;
     string word, queryStatement;
 
 	//Connect to the database, limited to old style c code by the sqlite header file
@@ -76,7 +76,6 @@ void sentenceParser(vector<string> userMessage)
 
             if(!ispunct(word.at(0)))
             {
-
                 //query database tables for the word, and set the vector element = to the positive matches for type
                 queryStatement = "SELECT    Type   FROM    Grammar  WHERE    Word =  '" + word + "'";
                 //Create cstring version of sql statement so it can pass into the sql arguement
@@ -86,9 +85,9 @@ void sentenceParser(vector<string> userMessage)
                 sql = charSQl;
 
                 //Execute sql statement
-                rc = sqlite3_exec(db, sql, callback , (void*)data, &zErrMsg);
-                verifySql(rc, zErrMsg);
+                rc = sqlite3_exec(db, sql, parserCallback , (void*)data, &zErrMsg);
             }
+
             //Generate database from words.txt on special case that user input contains "GENDATA"
 			if(word == "GENDATA")
             {
@@ -101,16 +100,17 @@ void sentenceParser(vector<string> userMessage)
 	sqlite3_close(db);
 }
 
-//This callback function is used to get data from sql SELECT statements
-static int callback(void *data, int argc, char **argv, char **azColName)
+//Used to place sql query results into wordTypes
+static int parserCallback(void *data, int argc, char **argv, char **azColName)
 {
     int i;
-    fprintf(stderr, "%s: ", (const char*)data);
+
     for(i=0; i<argc; i++)
     {
-        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+        //printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+        wordTypes.at(i) = argv[i];
+        cout << wordTypes.at(i) << endl;
     }
-    printf("\n");
 
     return 0;
 }

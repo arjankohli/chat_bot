@@ -16,16 +16,15 @@ string getUserSentence()
 }
 
 //Given an input sentence, this function creates a vector from that sentence so it can be easily parsed.
-void createVector(string string_userMessage, vector<string> vector_userMessage)
+vector<string> createVector(string string_userMessage)
 {
-    vector_userMessage.clear();
-    vector_userMessage.resize(1);
+    vector<string> vector_userMessage(1);
 
 	for(unsigned strPos = 0, vectPos = 0; strPos < string_userMessage.length(); strPos++)
 	{
 		if(isalnum(string_userMessage.at(strPos)))
 		{
-			vector_userMessage.at(vectPos).push_back(string_userMessage.at(strPos));
+			vector_userMessage.at(vectPos).push_back(tolower(string_userMessage.at(strPos)));
 		}
 		else if(isspace(string_userMessage.at(strPos)))
 		{
@@ -39,4 +38,6 @@ void createVector(string string_userMessage, vector<string> vector_userMessage)
 			vector_userMessage.at(vectPos).push_back(string_userMessage.at(strPos));
 		}
 	}
+
+	return vector_userMessage;
 }

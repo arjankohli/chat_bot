@@ -7,6 +7,6 @@
 using namespace std;
 
 string getUserSentence();
-void createVector(string, vector<string>);
+vector<string> createVector(string);
 
 #endif // CONVERSE_H_INCLUDED
