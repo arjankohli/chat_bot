@@ -6,13 +6,20 @@
 #include <sqldatabase.h>
 #include <think.h>
 
-void parseSentence(sentence &Sentence)
+/*
+    Tests words in the sentence against the database to identify word types,
+    test word types against conditionals to identify type of sentence,
+    passover to a function that handles response.
+*/
+void parseSentence(vector<word> &sentence)
 {
     sqlite3 *db;
     char *sql;
-    char *errorMsg = 0;
     int length;
-    string queryStatement;
+    int rc;
+    char *errorMsg = 0;
+    string sql_selectStatement;
+    void* point_Sentence = &sentence;
 
     //Connect to the database
     if(sqlite3_open("vocabulary.db", &db))
@@ -22,27 +29,43 @@ void parseSentence(sentence &Sentence)
     else
     {
         //Create a vector which models the grammatic types of the sentence
-        for(unsigned i = 0; i < Sentence.word.size(); i++)
+        for(unsigned i = 0; i < sentence.size(); i++)
         {
-            if(Sentence.word.at(i) == "GENDATA")
+            if(sentence.at(i).name == "GENDATA")
             {
                 generateDatabase();
             }
-            else if(!ispunct(Sentence.word.at(i).at(0)))
+            else if(sentence.at(i).name != "." && sentence.at(i).name != "!" && sentence.at(i).name != "?")
             {
-                //query database tables for the word
-                queryStatement = "SELECT    Type   FROM    Grammar  WHERE    Word =  '" + Sentence.word.at(i) + "'";
-                //Create cstring version of sql statement so it can pass into the sql arguement
-                length = queryStatement.length() + 1;
+                sql_selectStatement = "SELECT Type FROM Grammar WHERE Word = '" + sentence.at(i).name + "'";
+                //Create a cstring version of the sql statement so it can be passed to sqlite.h functions
+                length = sql_selectStatement.length() + 1;
                 char charSQl[length];
-                strcpy(charSQl, queryStatement.c_str());
+                strcpy(charSQl, sql_selectStatement.c_str());
                 sql = charSQl;
 
                 //Execute sql statement
+                sqlite3_exec(db, sql, select_callback, point_Sentence, &errorMsg);
 
+               // sentence.at(i).type = sql_selectStatement;
             }
         }
+
+        //Perform logic conditionals against the sentence types
     }
 
     sqlite3_close(db);
+}
+
+static int select_callback(void* sentence, int argc, char **argv, char **azColName)
+{
+   int i;
+   vector<word> Sentence = *((vector<word>*)sentence);
+
+   //Sentence.at(i).type = argv[i];
+   for(i=0; i<argc; i++){
+      cout << azColName[i] << " " << argv[i];
+   }
+
+   return 0;
 }

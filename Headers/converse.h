@@ -3,10 +3,10 @@
 
 #include <string>
 #include <vector>
+#include <wordstruct.h>
 
 using namespace std;
 
-string getUserSentence();
-vector<string> createVector(string);
+void getUserSentence(vector<word> &sentence);
 
 #endif // CONVERSE_H_INCLUDED

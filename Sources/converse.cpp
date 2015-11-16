@@ -5,39 +5,34 @@
 
 using namespace std;
 
-string getUserSentence()
+/*
+    Gets an input string from the console and
+    creates a vector from that sentence so it can be easily parsed.
+*/
+void getUserSentence(vector<word> &sentence)
 {
 	string inputString;
 
 	getline(cin, inputString);
-	cin.ignore();
 
-	return inputString;
-}
+	sentence.resize(1);
 
-//Given an input sentence, this function creates a vector from that sentence so it can be easily parsed.
-vector<string> createVector(string string_userMessage)
-{
-    vector<string> vector_userMessage(1);
-
-	for(unsigned strPos = 0, vectPos = 0; strPos < string_userMessage.length(); strPos++)
+	for(unsigned strPos = 0, vectPos = 0; strPos < inputString.length(); strPos++)
 	{
-		if(isalnum(string_userMessage.at(strPos)))
+		if(isalnum(inputString.at(strPos)))
 		{
-			vector_userMessage.at(vectPos).push_back(tolower(string_userMessage.at(strPos)));
+			sentence.at(vectPos).name.push_back(tolower(inputString.at(strPos)));
 		}
-		else if(isspace(string_userMessage.at(strPos)))
+		else if(isspace(inputString.at(strPos)))
 		{
 		    vectPos++;
-			vector_userMessage.resize(vectPos + 1);
+			sentence.resize(vectPos + 1);
 		}
-		else if(ispunct(string_userMessage.at(strPos)))
+		else if(ispunct(inputString.at(strPos)))
 		{
 		    vectPos++;
-			vector_userMessage.resize(vectPos + 1);
-			vector_userMessage.at(vectPos).push_back(string_userMessage.at(strPos));
+			sentence.resize(vectPos + 1);
+			sentence.at(vectPos).name.push_back(inputString.at(strPos));
 		}
 	}
-
-	return vector_userMessage;
 }

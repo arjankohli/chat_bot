@@ -7,14 +7,7 @@
 
 using namespace std;
 
-struct sentence
-{
-    vector<string> word;
-    vector<string> type;
-};
-
 void verifySql(int rc, char *errorMsg);
 void generateDatabase();
-void execSelectQuery(sqlite3* db, sentence &Sentence);
 
 #endif // DBASEMANAGER_H_INCLUDED

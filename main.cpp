@@ -20,7 +20,7 @@ using namespace std;
 
 int main()
 {
-    sentence Sentence;
+    vector<word> sentence;
     bool userLeaving = false;
 
     //Initial greeting, maybe move this into converse.h
@@ -30,22 +30,25 @@ int main()
     do
     {
         //Get the user sentence and place into vector
-        Sentence.word = createVector(getUserSentence());
+        getUserSentence(sentence);
 
-        ///PLACE THIS SOMEWHERE ELSE, IT IS UGLY!!!
-        Sentence.type.resize(Sentence.word.size());
+        cout << sentence.size();
 
-        //Determine the sentence type utilizing a database of vocabulary
-        parseSentence(Sentence);
+        ///Determine the sentence type utilizing a database of vocabulary
+        parseSentence(sentence);
 
         //Function to structure a response here
 
         //Function to output a response here
+        /*
+        for(int i = 0; i < sentence.size(); i++)
+        {
+            cout << sentence.at(i).type;
+        }
+        */
 
         ///PLACE THIS SOMEWHERE ELSE, IT IS UGLY!!!
-        Sentence.word.clear();
-        Sentence.type.clear();
-
+        sentence.clear();
     }
     while(!userLeaving);
 
