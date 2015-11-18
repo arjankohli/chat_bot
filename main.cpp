@@ -32,23 +32,26 @@ int main()
         //Get the user sentence and place into vector
         getUserSentence(sentence);
 
-        cout << sentence.size();
-
         ///Determine the sentence type utilizing a database of vocabulary
         parseSentence(sentence);
 
         //Function to structure a response here
 
         //Function to output a response here
-        /*
-        for(int i = 0; i < sentence.size(); i++)
+
+        for(unsigned i = 0; i < sentence.size(); i++)
         {
-            cout << sentence.at(i).type;
+            cout << sentence.at(i).type << endl;
         }
-        */
+
+        for(unsigned i = 0; i < sentence.size(); i++)
+        {
+            cout << sentence.at(i).name << endl;
+        }
+
+        cout << sentence.size();
 
         ///PLACE THIS SOMEWHERE ELSE, IT IS UGLY!!!
-        sentence.clear();
     }
     while(!userLeaving);
 

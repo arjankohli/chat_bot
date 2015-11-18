@@ -12,27 +12,30 @@ using namespace std;
 void getUserSentence(vector<word> &sentence)
 {
 	string inputString;
+    int pos1, pos2;
+    pos1 = pos2 = 0;
+    word buffer;
 
-	getline(cin, inputString);
+    sentence.clear();
 
-	sentence.resize(1);
+    getline(cin, inputString);
 
-	for(unsigned strPos = 0, vectPos = 0; strPos < inputString.length(); strPos++)
-	{
-		if(isalnum(inputString.at(strPos)))
-		{
-			sentence.at(vectPos).name.push_back(tolower(inputString.at(strPos)));
-		}
-		else if(isspace(inputString.at(strPos)))
-		{
-		    vectPos++;
-			sentence.resize(vectPos + 1);
-		}
-		else if(ispunct(inputString.at(strPos)))
-		{
-		    vectPos++;
-			sentence.resize(vectPos + 1);
-			sentence.at(vectPos).name.push_back(inputString.at(strPos));
-		}
-	}
+    while(pos1 < inputString.length())
+    {
+        pos2 = inputString.find(' ', pos1 + 1);
+
+        if(pos2 == -1)
+        {
+            pos2 = inputString.length();i
+        }
+
+        buffer.name = inputString.substr(pos1, pos2 - pos1);
+
+        if(buffer.name.find(' ') == -1)
+        {
+            sentence.push_back(buffer);
+        }
+
+        pos1 = pos2 + 1;
+    }
 }

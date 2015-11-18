@@ -16,7 +16,6 @@ void parseSentence(vector<word> &sentence)
     sqlite3 *db;
     char *sql;
     int length;
-    int rc;
     char *errorMsg = 0;
     string sql_selectStatement;
     void* point_Sentence = &sentence;
@@ -35,9 +34,9 @@ void parseSentence(vector<word> &sentence)
             {
                 generateDatabase();
             }
-            else if(sentence.at(i).name != "." && sentence.at(i).name != "!" && sentence.at(i).name != "?")
+            else
             {
-                sql_selectStatement = "SELECT Type FROM Grammar WHERE Word = '" + sentence.at(i).name + "'";
+                sql_selectStatement = "SELECT * FROM Grammar WHERE Word = '" + sentence.at(i).name + "'";
                 //Create a cstring version of the sql statement so it can be passed to sqlite.h functions
                 length = sql_selectStatement.length() + 1;
                 char charSQl[length];
@@ -46,8 +45,6 @@ void parseSentence(vector<word> &sentence)
 
                 //Execute sql statement
                 sqlite3_exec(db, sql, select_callback, point_Sentence, &errorMsg);
-
-               // sentence.at(i).type = sql_selectStatement;
             }
         }
 
@@ -59,13 +56,32 @@ void parseSentence(vector<word> &sentence)
 
 static int select_callback(void* sentence, int argc, char **argv, char **azColName)
 {
-   int i;
-   vector<word> Sentence = *((vector<word>*)sentence);
+    static unsigned vectPos = 0;
+    unsigned vectSize = ((vector<word>*)sentence) -> size();
+    unsigned argcCount = 0;
 
-   //Sentence.at(i).type = argv[i];
-   for(i=0; i<argc; i++){
-      cout << azColName[i] << " " << argv[i];
-   }
+    //Columns:   Word    Type
+    //^this format warrants counting by 2.
+    do
+    {
+        if((string)argv[argcCount] == ((vector<word>*)sentence) -> at(vectPos).name)
+        {
+            ((vector<word>*)sentence) -> at(vectPos).type = (string)argv[argcCount + 1];
+        }
+        else
+        {
+            ((vector<word>*)sentence) -> at(vectPos).type = "";
+        }
 
-   return 0;
+        argcCount+=2;
+        vectPos++;
+    }while(argcCount < argc);
+
+    //Resets vectPos once a sentence reaches the end.
+    if(vectPos == vectSize)
+    {
+        vectPos = 0;
+    }
+
+    return 0;
 }
