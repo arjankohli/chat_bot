@@ -26,7 +26,7 @@ void getUserSentence(vector<word> &sentence)
 
         if(pos2 == -1)
         {
-            pos2 = inputString.length();i
+            pos2 = inputString.length();
         }
 
         buffer.name = inputString.substr(pos1, pos2 - pos1);

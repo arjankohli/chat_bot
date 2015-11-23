@@ -49,6 +49,10 @@ void parseSentence(vector<word> &sentence)
         }
 
         //Perform logic conditionals against the sentence types
+        if(/*some code to determing type*/)
+        {
+            //do this stuff
+        }
     }
 
     sqlite3_close(db);
@@ -57,28 +61,20 @@ void parseSentence(vector<word> &sentence)
 static int select_callback(void* sentence, int argc, char **argv, char **azColName)
 {
     static unsigned vectPos = 0;
-    unsigned vectSize = ((vector<word>*)sentence) -> size();
-    unsigned argcCount = 0;
 
-    //Columns:   Word    Type
-    //^this format warrants counting by 2.
-    do
+    if((string)argv[0] == ((vector<word>*)sentence) -> at(vectPos).name)
     {
-        if((string)argv[argcCount] == ((vector<word>*)sentence) -> at(vectPos).name)
-        {
-            ((vector<word>*)sentence) -> at(vectPos).type = (string)argv[argcCount + 1];
-        }
-        else
-        {
-            ((vector<word>*)sentence) -> at(vectPos).type = "";
-        }
+        ((vector<word>*)sentence) -> at(vectPos).type = (string)argv[1];
+    }
+    else
+    {
+        ((vector<word>*)sentence) -> at(vectPos).type = "";
+    }
 
-        argcCount+=2;
-        vectPos++;
-    }while(argcCount < argc);
+    vectPos++;
 
     //Resets vectPos once a sentence reaches the end.
-    if(vectPos == vectSize)
+    if(vectPos == ((vector<word>*)sentence) -> size())
     {
         vectPos = 0;
     }
